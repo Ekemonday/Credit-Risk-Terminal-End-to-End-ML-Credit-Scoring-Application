@@ -6,8 +6,8 @@ with a custom-designed instrument-panel style **web frontend**.
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐     ┌─────────────┐
-│ generate    │ ──▶ │ train_model.py    │ ──▶ │ model/*.joblib│ ──▶ │ app.py       │
-│ dataset.py  │     │ (XGBoost pipeline)│     │ + metadata.json│     │ (Flask API) │
+│ Dataset    │ ──▶ │ train_model.py    │ ──▶ │ model/*.joblib│ ──▶ │ app.py       │
+│   │     │          (XGBoost pipeline)│     │ + metadata.json│     │ (Flask API) │
 └─────────────┘     └──────────────────┘     └──────────────┘     └──────┬──────┘
                                                                            │
                                                                     templates/static
