@@ -45,21 +45,7 @@ source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## 2. (Re)generate data and train the model
-
-The trained model artifacts are already included in `model/`, so this step
-is optional unless you want to regenerate everything from scratch:
-
-```bash
-python3 data/generate_dataset.py   # writes data/credit_risk_dataset.csv
-python3 train_model.py             # trains XGBoost, writes model/ artifacts
-```
-
-`train_model.py` prints test-set ROC-AUC, PR-AUC, KS statistic, a confusion
-matrix, and the top feature importances, and saves everything the Flask app
-needs (`xgb_credit_model.joblib`, `scaler.joblib`, `metadata.json`).
-
-## 3. Run the app
+## 2. Run the app
 
 ```bash
 python3 app.py
