@@ -1,0 +1,224 @@
+{
+  "feature_cols": [
+    "age",
+    "annual_income",
+    "employment_length_years",
+    "loan_amount",
+    "loan_term_months",
+    "credit_history_years",
+    "num_credit_lines",
+    "num_delinquencies_2y",
+    "revolving_utilization",
+    "debt_to_income",
+    "inquiries_6m",
+    "loan_to_income",
+    "income_per_credit_line",
+    "credit_history_ratio",
+    "monthly_payment_est",
+    "payment_to_income",
+    "home_ownership_MORTGAGE",
+    "home_ownership_OWN",
+    "home_ownership_RENT",
+    "loan_purpose_car",
+    "loan_purpose_credit_card",
+    "loan_purpose_debt_consolidation",
+    "loan_purpose_home_improvement",
+    "loan_purpose_major_purchase",
+    "loan_purpose_medical",
+    "loan_purpose_other",
+    "loan_purpose_small_business"
+  ],
+  "numeric_cols": [
+    "age",
+    "annual_income",
+    "employment_length_years",
+    "loan_amount",
+    "loan_term_months",
+    "credit_history_years",
+    "num_credit_lines",
+    "num_delinquencies_2y",
+    "revolving_utilization",
+    "debt_to_income",
+    "inquiries_6m",
+    "loan_to_income",
+    "income_per_credit_line",
+    "credit_history_ratio",
+    "monthly_payment_est",
+    "payment_to_income"
+  ],
+  "categorical_cols": [
+    "home_ownership",
+    "loan_purpose"
+  ],
+  "categorical_values": {
+    "home_ownership": [
+      "MORTGAGE",
+      "OWN",
+      "RENT"
+    ],
+    "loan_purpose": [
+      "car",
+      "credit_card",
+      "debt_consolidation",
+      "home_improvement",
+      "major_purchase",
+      "medical",
+      "other",
+      "small_business"
+    ]
+  },
+  "metrics": {
+    "roc_auc": 0.7135272038484344,
+    "pr_auc": 0.5425235748601793,
+    "accuracy": 0.6657777777777778,
+    "ks_statistic": 0.31572776565975263,
+    "confusion_matrix": [
+      [
+        1039,
+        470
+      ],
+      [
+        282,
+        459
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.7865253595760787,
+        "recall": 0.6885354539430086,
+        "f1-score": 0.7342756183745583,
+        "support": 1509.0
+      },
+      "1": {
+        "precision": 0.4940796555435953,
+        "recall": 0.6194331983805668,
+        "f1-score": 0.5497005988023952,
+        "support": 741.0
+      },
+      "accuracy": 0.6657777777777778,
+      "macro avg": {
+        "precision": 0.640302507559837,
+        "recall": 0.6539843261617877,
+        "f1-score": 0.6419881085884768,
+        "support": 2250.0
+      },
+      "weighted avg": {
+        "precision": 0.6902132410480476,
+        "recall": 0.6657777777777778,
+        "f1-score": 0.6734889119287926,
+        "support": 2250.0
+      }
+    }
+  },
+  "feature_importance": [
+    [
+      "debt_to_income",
+      0.10002600401639938
+    ],
+    [
+      "num_delinquencies_2y",
+      0.07724267989397049
+    ],
+    [
+      "loan_to_income",
+      0.0701703280210495
+    ],
+    [
+      "revolving_utilization",
+      0.06563403457403183
+    ],
+    [
+      "annual_income",
+      0.06431291252374649
+    ],
+    [
+      "employment_length_years",
+      0.04252809286117554
+    ],
+    [
+      "inquiries_6m",
+      0.04146816208958626
+    ],
+    [
+      "home_ownership_RENT",
+      0.03897649794816971
+    ],
+    [
+      "payment_to_income",
+      0.033796533942222595
+    ],
+    [
+      "home_ownership_OWN",
+      0.03208759054541588
+    ],
+    [
+      "credit_history_ratio",
+      0.030649885535240173
+    ],
+    [
+      "income_per_credit_line",
+      0.03061426430940628
+    ],
+    [
+      "credit_history_years",
+      0.029857758432626724
+    ],
+    [
+      "loan_purpose_small_business",
+      0.02894102782011032
+    ],
+    [
+      "loan_purpose_credit_card",
+      0.027997592464089394
+    ],
+    [
+      "loan_amount",
+      0.027374714612960815
+    ],
+    [
+      "loan_purpose_home_improvement",
+      0.0272498931735754
+    ],
+    [
+      "loan_purpose_major_purchase",
+      0.02639169432222843
+    ],
+    [
+      "age",
+      0.02605002000927925
+    ],
+    [
+      "num_credit_lines",
+      0.0250204186886549
+    ],
+    [
+      "loan_purpose_car",
+      0.024311883375048637
+    ],
+    [
+      "monthly_payment_est",
+      0.02327600307762623
+    ],
+    [
+      "loan_term_months",
+      0.022624127566814423
+    ],
+    [
+      "loan_purpose_debt_consolidation",
+      0.021734053269028664
+    ],
+    [
+      "loan_purpose_other",
+      0.02155752293765545
+    ],
+    [
+      "loan_purpose_medical",
+      0.020684000104665756
+    ],
+    [
+      "home_ownership_MORTGAGE",
+      0.019422249868512154
+    ]
+  ],
+  "best_iteration": 249
+}

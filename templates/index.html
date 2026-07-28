@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Risk Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="brand-mark">◈</span>
+    <div class="brand-text">
+      <span class="brand-title">Credit Risk Terminal</span>
+      <span class="brand-sub">Underwriting readout · v1.0</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="stat">
+      <span class="stat-label">Model</span>
+      <span class="stat-value">XGBoost</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">ROC-AUC</span>
+      <span class="stat-value">{{ "%.3f"|format(metrics.roc_auc) }}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">KS</span>
+      <span class="stat-value">{{ "%.3f"|format(metrics.ks_statistic) }}</span>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: Applicant ledger / intake form -->
+  <section class="ledger" aria-label="Applicant intake form">
+    <form id="risk-form">
+
+      <div class="ledger-section">
+        <div class="ledger-heading">
+          <span class="section-index">01</span>
+          <span class="section-title">Applicant</span>
+          <span class="section-rule"></span>
+        </div>
+        <div class="field-grid">
+          <label class="field">
+            <span class="field-label">Age</span>
+            <input type="number" name="age" min="18" max="80" value="34" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Annual income (USD)</span>
+            <input type="number" name="annual_income" min="1000" step="500" value="62000" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Employment length (years)</span>
+            <input type="number" name="employment_length_years" min="0" max="45" step="0.5" value="4.5" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Home ownership</span>
+            <select name="home_ownership" required>
+              {% for v in categorical_values.home_ownership %}
+              <option value="{{ v }}" {% if v == 'MORTGAGE' %}selected{% endif %}>{{ v.title() }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="ledger-section">
+        <div class="ledger-heading">
+          <span class="section-index">02</span>
+          <span class="section-title">Loan request</span>
+          <span class="section-rule"></span>
+        </div>
+        <div class="field-grid">
+          <label class="field">
+            <span class="field-label">Loan amount (USD)</span>
+            <input type="number" name="loan_amount" min="500" step="100" value="15000" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Term (months)</span>
+            <select name="loan_term_months" required>
+              <option value="12">12</option>
+              <option value="24">24</option>
+              <option value="36" selected>36</option>
+              <option value="48">48</option>
+              <option value="60">60</option>
+            </select>
+          </label>
+          <label class="field field-span2">
+            <span class="field-label">Purpose</span>
+            <select name="loan_purpose" required>
+              {% for v in categorical_values.loan_purpose %}
+              <option value="{{ v }}" {% if v == 'debt_consolidation' %}selected{% endif %}>{{ v.replace('_',' ').title() }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="ledger-section">
+        <div class="ledger-heading">
+          <span class="section-index">03</span>
+          <span class="section-title">Credit history</span>
+          <span class="section-rule"></span>
+        </div>
+        <div class="field-grid">
+          <label class="field">
+            <span class="field-label">Credit history (years)</span>
+            <input type="number" name="credit_history_years" min="0" max="50" step="0.5" value="8" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Open credit lines</span>
+            <input type="number" name="num_credit_lines" min="0" max="40" value="6" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Delinquencies (2y)</span>
+            <input type="number" name="num_delinquencies_2y" min="0" max="20" value="0" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Inquiries (6mo)</span>
+            <input type="number" name="inquiries_6m" min="0" max="20" value="1" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Revolving utilization</span>
+            <div class="range-field">
+              <input type="range" name="revolving_utilization" min="0" max="1" step="0.01" value="0.3">
+              <span class="range-readout" data-for="revolving_utilization">30%</span>
+            </div>
+          </label>
+          <label class="field">
+            <span class="field-label">Debt-to-income</span>
+            <div class="range-field">
+              <input type="range" name="debt_to_income" min="0" max="1.2" step="0.01" value="0.28">
+              <span class="range-readout" data-for="debt_to_income">28%</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="run-btn" id="run-btn">
+        <span class="run-btn-label">Run assessment</span>
+        <span class="run-btn-arrow">→</span>
+      </button>
+      <p class="ledger-footnote">Trained on synthetic underwriting data for demonstration. Not a real lending decision.</p>
+    </form>
+  </section>
+
+  <!-- RIGHT: Risk readout -->
+  <aside class="readout" aria-label="Risk assessment result">
+    <div class="readout-inner">
+
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 240 150" class="gauge-svg" id="gauge-svg">
+          <defs>
+            <linearGradient id="arc-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3FA796"/>
+              <stop offset="35%" stop-color="#63B37A"/>
+              <stop offset="60%" stop-color="#E0A458"/>
+              <stop offset="80%" stop-color="#DB7B3F"/>
+              <stop offset="100%" stop-color="#C1443C"/>
+            </linearGradient>
+          </defs>
+          <!-- track -->
+          <path d="M 20 130 A 100 100 0 0 1 220 130" fill="none" stroke="#232A35" stroke-width="14" stroke-linecap="round"/>
+          <!-- colored arc -->
+          <path d="M 20 130 A 100 100 0 0 1 220 130" fill="none" stroke="url(#arc-gradient)" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+          <!-- ticks -->
+          <g id="ticks"></g>
+          <!-- needle -->
+          <g id="needle-group" transform="rotate(-90 120 130)">
+            <line x1="120" y1="130" x2="120" y2="42" stroke="#C9A227" stroke-width="3" stroke-linecap="round" id="needle"/>
+            <circle cx="120" cy="130" r="7" fill="#C9A227" stroke="#12151C" stroke-width="2"/>
+          </g>
+        </svg>
+        <div class="gauge-labels">
+          <span>0%</span>
+          <span>50%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <div class="readout-status" id="readout-status">
+        <span class="pd-value" id="pd-value">—</span>
+        <span class="pd-caption">probability of default</span>
+      </div>
+
+      <div class="grade-badge" id="grade-badge">
+        <span class="grade-letter" id="grade-letter">—</span>
+        <span class="grade-label" id="grade-label">Awaiting input</span>
+      </div>
+
+      <div class="factors-block">
+        <div class="factors-heading">
+          <span>Top contributing factors</span>
+        </div>
+        <ul class="factors-list" id="factors-list">
+          <li class="factor-placeholder">Run an assessment to see the ranked drivers behind this score.</li>
+        </ul>
+      </div>
+
+    </div>
+  </aside>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
