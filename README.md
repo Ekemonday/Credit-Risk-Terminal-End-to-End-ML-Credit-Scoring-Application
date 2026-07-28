@@ -112,3 +112,8 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 - `top_factors` uses global XGBoost feature importance plus simple
   threshold heuristics for the "elevated/normal" flag — for production-grade
   explainability, consider SHAP values per prediction instead.
+
+
+  CREDIT RISK USER INTERFACE
+  <img width="1360" height="634" alt="image" src="https://github.com/user-attachments/assets/d4634231-c8f4-4609-be5b-75adc88d40c7" />
+
